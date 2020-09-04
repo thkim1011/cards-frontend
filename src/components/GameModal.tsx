@@ -1,42 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 interface GameModalProps {
-    show: boolean;
-    closeHandler: () => void;
+  show: boolean;
+  closeHandler: () => void;
 }
-const GameModal : React.FunctionComponent<GameModalProps> = (props) => {
-    if (!props.show) {
-        return null;
-    }
-    return (
-        <BackgroundBox>
-            <ModalBox>
-                <form>
-                    <label>
-                        Game Type:
-                        <select>
-                            <option value="big-two">Big Two</option>
-                            <option value="poker">Poker</option>
-                        </select>
-                    </label><br />
-                    <label>
-                        Number of Players:
-                        <select>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                        </select><br />
-                    </label>
-                    <button>Submit</button>
-                    <button onClick={props.closeHandler}>Close The Modal</button> 
-                </form>
-            </ModalBox>
-        </BackgroundBox>
-    );
+
+const ENDPOINT = 'http://localhost:5000';
+
+const onSubmit = async (gameType: string, history: any) => {
+  console.log('New game called')
+  const response = await fetch(`${ENDPOINT}/newGame`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(gameType)
+  });
+  const id = await response.text();
+  history.push(`/game/${id}`)
+}
+
+const GameModal: React.FunctionComponent<GameModalProps> = (props) => {
+  const history = useHistory();
+  const [gameType, setGameType] = useState<string>('');
+
+  if (!props.show) {
+    return null;
+  }
+  return (
+    <BackgroundBox>
+      <ModalBox>
+          <label>
+            Game Type:
+            <select value={gameType} onChange={(event) => setGameType(event.target.value)}>
+              <option value="big-two">Big Two</option>
+              <option value="poker">Poker</option>
+            </select>
+          </label><br />
+          <label>
+            Number of Players:
+            <select>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+            </select><br />
+          </label>
+          <button onClick={props.closeHandler}>Close The Modal</button>
+          <button onClick={() => {onSubmit(gameType, history)}}>Submit</button>
+      </ModalBox>
+    </BackgroundBox>
+  );
 };
 
-export default GameModal; 
+export default GameModal;
 
 const BackgroundBox = styled.div`
     position: fixed;

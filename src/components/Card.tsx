@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import CLUB1 from '../assets/CLUB-1.svg';
 import CLUB2 from '../assets/CLUB-2.svg';
 import CLUB3 from '../assets/CLUB-3.svg';
