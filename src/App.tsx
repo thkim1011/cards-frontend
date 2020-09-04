@@ -9,6 +9,9 @@ import Header from './components/Header';
 import './App.css';
 import Game from './components/Game';
 import styled from 'styled-components';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 function App() {
   return (
@@ -18,7 +21,7 @@ function App() {
         <Wrapper>
           <Switch>
             <Route path="/game">
-              <Game />
+              <Game socket={socket}/>
             </Route>
             <Route path="/">
               <Home />
@@ -32,9 +35,6 @@ function App() {
 
 const Wrapper = styled.div`
     padding-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 70%;
     min-width: 700px;
     display: flex;
     flex-direction: row;

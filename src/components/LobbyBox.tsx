@@ -22,7 +22,6 @@ export default LobbyBox;
 
 const Box = styled.div`
     background-color: white;
-    width: 500px;
     height: 500px; 
     box-shadow: 0px 0px 20px 0px #c0c0c0;
 `;

@@ -31,13 +31,14 @@ const Home: React.FunctionComponent = () => {
 }
 
 const LeftColumn = styled.div`
-    width: 300px;
+    width: 20%;
     display: flex;
     flex-direction: column;
+    margin-left: 20px;
 `;
 
 const CenterColumn = styled.div`
-    width: 500px;
+    width: 55%;
     display: flex;
     flex-direction: column;
     margin-left: 20px;
@@ -45,9 +46,10 @@ const CenterColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-    width: 300px;
+    width: 20%;
     display: flex;
     flex-direction: column;
+    margin-right: 20px;
 `;
 
 export default Home;
