@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Cards Frontend
+This is a frontend for the cards application written in react.
 
-## Available Scripts
+## Setting up environment
+For the environment setup, we recommend using `node` managed by `nvm` and `yarn`. Follow these steps to setup the environment.
+1. Clone the repository to a local directory. 
+```
+# For ssh
+git clone git@github.com:thkim1011/cards-frontend.git
+# For https
+git clone https://github.com/thkim1011/cards-frontend.git
+```
+2. Install node version manager `nvm` with the following command (from https://github.com/nvm-sh/nvm)
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+```
+3. Check that there is a new `~/.nvm` directory. Make sure that `nvm` is in your path by running `nvm --version`. \
+4. Now, run the following to install the version of node required for this project.
+```
+cd ~/path/to/cards-frontend
+nvm use
+```
 
-In the project directory, you can run:
+Now, all we have left to do is install `yarn`. From here on, the steps will differ based on whether you use MacOS or Linux.
+### Ubuntu
+(These steps are taken directly from https://classic.yarnpkg.com/en/docs/install#debian-stable.) 
 
-### `npm start`
+Add yarn to your apt repository as follows:
+```
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+```
+Uninstall `cmdtest` which provides a different `yarn` binary.
+```
+sudo apt remove cmdtest
+sudo apt autoremove 
+```
+Finally, install `yarn`.
+```
+sudo apt update && sudo apt install yarn
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### MacOS
+You should be able to install yarn with brew.
+```
+brew install yarn
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Workflow
+To build the project for the first time, you can run the following to install dependencies
+```
+yarn
+```
+To start a local server, run
+```
+yarn start
+```
