@@ -4,15 +4,6 @@ import styled from 'styled-components';
 import Card from './Card';
 
 const LobbyBox: React.FunctionComponent = () => {
-    
-    const response = [
-        {
-            user: 'thkim1011',
-            type: 'big-two',
-            rating: '2100'
-        }
-    ];
-
     return <Box>
         <Card cardType={1}/>
     </Box> 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 export interface ChatProps {
-  socket: SocketIOClient.Socket;
+  socket?: SocketIOClient.Socket;
   sendHandler: (message: string) => void;
 }
 
@@ -11,12 +11,12 @@ const Chat: React.FunctionComponent<ChatProps> = (props) => {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    props.socket.on('message', (data: string) => {
+    props.socket?.on('message', (data: string) => {
       console.log([...messages, data])
       setMessages((messages) => [...messages, data]);
       console.log(`cHat: ${messages}`)
     });
-  }, []);
+  }, [props.socket]);
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       props.sendHandler(message);

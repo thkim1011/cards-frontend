@@ -11,15 +11,15 @@ const ENDPOINT = 'http://localhost:5000';
 
 const onSubmit = async (gameType: string, history: any) => {
   console.log('New game called')
-  const response = await fetch(`${ENDPOINT}/newGame`, {
+  const response = await fetch(`${ENDPOINT}/new-game`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(gameType)
+    body: JSON.stringify({ gameType })
   });
-  const id = await response.text();
-  history.push(`/game/${id}`)
+  const response_body = await response.json();
+  history.push(`/game/${response_body.gameId}`)
 }
 
 const GameModal: React.FunctionComponent<GameModalProps> = (props) => {

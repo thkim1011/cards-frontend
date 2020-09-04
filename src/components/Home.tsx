@@ -3,10 +3,15 @@ import GameModal from './GameModal';
 import ProfileBox from './ProfileBox';
 import LobbyBox from './LobbyBox';
 import styled from 'styled-components';
+import { UserInfo } from '../App';
 
 const ENDPOINT = 'http://localhost:5000';
 
-const Home: React.FunctionComponent = () => {
+interface HomeProps {
+    userInfo: UserInfo;
+}
+
+const Home: React.FunctionComponent<HomeProps> = (props) => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const closeModalHandler = () => {
@@ -17,7 +22,7 @@ const Home: React.FunctionComponent = () => {
         <>
             <GameModal show={showModal} closeHandler={closeModalHandler}/>
                 <LeftColumn>
-                    <ProfileBox />
+                    <ProfileBox userInfo={props.userInfo} />
                 </LeftColumn>
                 <CenterColumn>
                     <LobbyBox />

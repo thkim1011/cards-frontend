@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,9 +11,26 @@ import Game from './components/Game';
 import styled from 'styled-components';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+
+export interface UserInfo {
+  username?: string;
+}
+
+const ENDPOINT = 'http://localhost:5000';
 
 function App() {
+  const [userInfo, setUserInfo] = useState({});
+  const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
+
+  useEffect(() => {
+    fetch(`${ENDPOINT}/get-user-info`).then((res) => {
+      return res.json();
+    }).then((json) => {
+      setUserInfo(json)
+      setSocket(io(ENDPOINT));
+    })
+  }, []);
+
   return (
     <Router>
       <div>
@@ -24,7 +41,7 @@ function App() {
               <Game socket={socket}/>
             </Route>
             <Route path="/">
-              <Home />
+              <Home userInfo={userInfo}/>
             </Route>
           </Switch>
         </Wrapper>
