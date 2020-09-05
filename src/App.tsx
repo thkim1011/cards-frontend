@@ -19,7 +19,7 @@ export interface UserInfo {
 const ENDPOINT = 'http://localhost:5000';
 
 function App() {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<UserInfo>({});
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function App() {
         <Wrapper>
           <Switch>
             <Route path="/game">
-              <Game socket={socket}/>
+              <Game socket={socket} username={userInfo.username ?? ''}/>
             </Route>
             <Route path="/">
               <Home userInfo={userInfo}/>
