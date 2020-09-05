@@ -23,7 +23,7 @@ function App() {
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
 
   useEffect(() => {
-    fetch(`${ENDPOINT}/get-user-info`).then((res) => {
+    fetch(`${ENDPOINT}/get-user-info`, { credentials: 'include' }).then((res) => {
       return res.json();
     }).then((json) => {
       setUserInfo(json)
