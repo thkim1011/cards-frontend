@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import styled from 'styled-components';
 import { useRouteMatch } from 'react-router-dom';
-import io from 'socket.io-client';
 import Chat from './Chat';
 
 interface GameState {
@@ -15,16 +14,15 @@ interface MatchParams {
 }
 
 interface GameProps {
-    socket: SocketIOClient.Socket;
+    socket?: SocketIOClient.Socket;
 }
 
 const Game: React.FunctionComponent<GameProps> = (props) => {
     const [gameState, setGameState] = useState<GameState>();
-    const [messages, setMessages] = useState<string[]>([]);
     const id = useRouteMatch<MatchParams>('/game/:id')?.params.id;
 
     const sendHandler = (message: string) => {
-        props.socket.send(message);
+        props.socket?.send(message);
     }
 
     useEffect(() => {
@@ -48,7 +46,7 @@ const Game: React.FunctionComponent<GameProps> = (props) => {
             }
         });
         // log into room
-        props.socket.emit('join', {username: 'test', id });
+        props.socket?.emit('join', {username: 'test', id });
     }, []);
 
     let cards;

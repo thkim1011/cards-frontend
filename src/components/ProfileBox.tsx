@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { UserInfo } from '../App';
 
-const ENDPOINT = 'http://localhost:5000';
+interface ProfileBoxProps {
+    userInfo: UserInfo;
+}
 
-const ProfileBox: React.FunctionComponent = () => {
-    const [profileName, setProfileName] = useState('');
-
-    useEffect(() => {
-        fetch(`${ENDPOINT}/user-info`).then((res) => {
-            return res.text();
-        }).then((text) => {
-            setProfileName(text);
-        })
-    }, []);
+const ProfileBox: React.FunctionComponent<ProfileBoxProps> = (props) => {
     return <Box>
-        {profileName}
+        {props.userInfo.username ?? ''}
     </Box>;
 }
 
