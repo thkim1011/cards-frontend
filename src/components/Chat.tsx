@@ -11,11 +11,12 @@ const Chat: React.FunctionComponent<ChatProps> = (props) => {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    props.socket?.on('message', (data: string) => {
-      console.log([...messages, data])
-      setMessages((messages) => [...messages, data]);
-      console.log(`cHat: ${messages}`)
+    props.socket?.on('chat', (message: string) => {
+      setMessages((messages) => [...messages, message]);
     });
+    props.socket?.on('chatHistory', (oldMessages: string[]) => {
+      setMessages((messages) => [...oldMessages, ...messages])
+    })
   }, [props.socket]);
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {

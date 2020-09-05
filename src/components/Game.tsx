@@ -7,6 +7,7 @@ import Chat from './Chat';
 interface GameState {
     others: any[];
     self: { cards: number[]};
+    board: { card: number };
 }
 
 interface MatchParams {
@@ -15,39 +16,64 @@ interface MatchParams {
 
 interface GameProps {
     socket?: SocketIOClient.Socket;
+    username: string;
 }
 
 const Game: React.FunctionComponent<GameProps> = (props) => {
     const [gameState, setGameState] = useState<GameState>();
-    const id = useRouteMatch<MatchParams>('/game/:id')?.params.id;
+    const [players, setPlayers] = useState<string[]>([]);
+    const [owner, setOwner] = useState<string>('');
+    const gameId = useRouteMatch<MatchParams>('/game/:id')?.params.id;
 
     const sendHandler = (message: string) => {
-        props.socket?.send(message);
+        props.socket?.emit('chat', gameId, message);
     }
 
     useEffect(() => {
-        setGameState({
-            others: [
-                {
-                    name: 'player1',
-                    cards: 13
-                },
-                {
-                    name: 'player2',
-                    cards: 13
-                },
-                {
-                    name: 'player3',
-                    cards: 13
-                }
-            ],
-            self: {
-                cards: [0, 12, 11, 10, 9]
-            }
+        // fetch('http://localhost:5000/join-game', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ gameId: id }),
+        //     credentials: 'include',
+        // }).then((response) => {
+        //     return response.json();
+        // }).then((json) => {
+        //     setPlayers(json.players);
+        // });
+        props.socket?.emit('join', gameId)
+        props.socket?.on('players', ({ players, owner }: { players: string[]; owner: string }) => {
+            setPlayers(players);
+            setOwner(owner)
         });
-        // log into room
-        props.socket?.emit('join', {username: 'test', id });
-    }, []);
+    }, [props.socket, props.username])
+    // useEffect(() => {
+    //     setGameState({
+    //         others: [
+    //             {
+    //                 name: 'player1',
+    //                 cards: 13
+    //             },
+    //             {
+    //                 name: 'player2',
+    //                 cards: 13
+    //             },
+    //             {
+    //                 name: 'player3',
+    //                 cards: 13
+    //             }
+    //         ],
+    //         self: {
+    //             cards: [0, 12, 11, 10, 9]
+    //         },
+    //         board: {
+    //             card: 0,
+    //         }
+    //     });
+    //     // log into room
+    //     props.socket?.emit('join', { id });
+    // }, []);
 
     let cards;
     if (gameState !== undefined) {
@@ -56,9 +82,27 @@ const Game: React.FunctionComponent<GameProps> = (props) => {
         });
     }
     return <>
-        <LeftColumn></LeftColumn>
+        <LeftColumn>
+            {
+                players.map((username) => {
+                    if (username === props.username && username === owner) {
+                        return <Box>
+                            {username}
+                            <br />
+                            <button>Start Game</button>
+                        </Box>
+                    }
+                    else {
+                        return <Box>{username}</Box>;
+                    }
+                })  
+            }
+        </LeftColumn>
         <CenterColumn>  
             <Box>
+                <Card cardType={gameState?.board.card ?? 0} />
+            </Box>
+            <Box style={{overflowX: 'scroll'}}>
                 {cards}
             </Box>;
         </CenterColumn>
@@ -73,6 +117,7 @@ export default Game;
 const Box = styled.div`
     background-color: white;
     box-shadow: 0px 0px 20px 0px #c0c0c0;
+    margin-bottom: 20px;
 `;
 
 const LeftColumn = styled.div`

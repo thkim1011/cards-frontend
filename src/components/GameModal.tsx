@@ -9,22 +9,25 @@ interface GameModalProps {
 
 const ENDPOINT = 'http://localhost:5000';
 
-const onSubmit = async (gameType: string, history: any) => {
-  console.log('New game called')
-  const response = await fetch(`${ENDPOINT}/new-game`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ gameType })
-  });
-  const response_body = await response.json();
-  history.push(`/game/${response_body.gameId}`)
-}
 
 const GameModal: React.FunctionComponent<GameModalProps> = (props) => {
   const history = useHistory();
-  const [gameType, setGameType] = useState<string>('');
+  const [gameType, setGameType] = useState<string>('big-two');
+  const [numPlayers, setNumPlayers] = useState<number>(4);
+
+  const onSubmit = async () => {
+    console.log('New game called')
+    const response = await fetch(`${ENDPOINT}/new-game`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ gameType, numPlayers }),
+      credentials: 'include',
+    });
+    const response_body = await response.json();
+    history.push(`/game/${response_body.gameId}`)
+  }
 
   if (!props.show) {
     return null;
@@ -41,14 +44,14 @@ const GameModal: React.FunctionComponent<GameModalProps> = (props) => {
           </label><br />
           <label>
             Number of Players:
-            <select>
+            <select value={numPlayers} onChange={(event) => setNumPlayers(parseInt(event.target.value))}>
               <option value={2}>2</option>
               <option value={3}>3</option>
               <option value={4}>4</option>
             </select><br />
           </label>
           <button onClick={props.closeHandler}>Close The Modal</button>
-          <button onClick={() => {onSubmit(gameType, history)}}>Submit</button>
+          <button onClick={() => {onSubmit()}}>Submit</button>
       </ModalBox>
     </BackgroundBox>
   );
